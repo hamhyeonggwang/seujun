@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Cafe SEUJUN ☕</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --cream: #FDF6EC; --warm: #3D1F0D; --caramel: #C8813A; --gold: #E8A83E;
+  --blush: #F2C4A0; --deep: #6B2A0F; --mint: #4BA882; --sky: #3A8FB5;
+  --rose: #E06B8B; --bg: #1A0D05;
+}
+body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); min-height: 100vh; overflow-x: hidden; color: var(--warm); }
+.screen { display: none; min-height: 100vh; animation: fade-in 0.35s ease; }
+.screen.active { display: flex; flex-direction: column; }
+@keyframes fade-in { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── WELCOME ── */
+#welcome {
+  background: radial-gradient(ellipse at 50% 25%, #3D1A08, #1A0D05 70%);
+  align-items: center; justify-content: center; text-align: center;
+  padding: 40px 24px; position: relative; overflow: hidden;
+}
+#welcome::before {
+  content:''; position:absolute; width:500px; height:500px; border-radius:50%;
+  background: radial-gradient(circle, rgba(200,129,58,.18), transparent 70%);
+  top:-80px; left:50%; transform:translateX(-50%);
+  animation: halo 4s ease-in-out infinite;
+}
+@keyframes halo { 0%,100%{transform:translateX(-50%) scale(1);opacity:.6;} 50%{transform:translateX(-50%) scale(1.12);opacity:1;} }
+
+.beans { position:absolute; inset:0; pointer-events:none; }
+.bean { position:absolute; font-size:22px; opacity:.25; animation:bf 6s ease-in-out infinite; }
+.bean:nth-child(1){top:8%;left:6%;animation-delay:0s;}
+.bean:nth-child(2){top:12%;right:8%;animation-delay:1s;}
+.bean:nth-child(3){top:62%;left:4%;animation-delay:2s;}
+.bean:nth-child(4){top:72%;right:6%;animation-delay:.5s;}
+.bean:nth-child(5){top:88%;left:18%;animation-delay:1.8s;}
+@keyframes bf { 0%,100%{transform:translateY(0) rotate(0deg);} 50%{transform:translateY(-14px) rotate(18deg);} }
+
+.logo-ring {
+  width:160px; height:160px; border-radius:50%;
+  background: linear-gradient(135deg, var(--caramel), var(--gold));
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 28px;
+  box-shadow: 0 0 60px rgba(200,129,58,.5), 0 0 120px rgba(200,129,58,.2);
+  position:relative; animation:lf 3s ease-in-out infinite;
+}
+@keyframes lf { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+.logo-ring::after { content:''; position:absolute; inset:6px; border-radius:50%; border:2px solid rgba(255,255,255,.3); }
+.logo-cs { font-family:'Playfair Display',serif; font-size:56px; font-weight:900; color:var(--warm); letter-spacing:-2px; line-height:1; }
+
+.cafe-sub { font-size:13px; color:var(--blush); letter-spacing:3px; margin-bottom:6px; }
+.cafe-title { font-family:'Playfair Display',serif; font-size:42px; font-weight:700; color:var(--cream); letter-spacing:6px; margin-bottom:8px; }
+.cafe-by { font-size:11px; color:rgba(242,196,160,.55); margin-bottom:48px; letter-spacing:.5px; line-height:1.6; }
+
+.hero-name {
+  background: linear-gradient(135deg,rgba(200,129,58,.2),rgba(232,168,62,.08));
+  border:1px solid rgba(200,129,58,.35); border-radius:20px;
+  padding:20px 32px; margin-bottom:48px;
+}
+.hero-name .hello { font-size:13px; color:var(--blush); margin-bottom:6px; }
+.hero-name .name { font-size:32px; font-weight:900; color:var(--gold); }
+.hero-name .name span { color:var(--cream); }
+
+.btn-start {
+  background: linear-gradient(135deg, var(--caramel), var(--gold));
+  color:var(--warm); border:none; border-radius:60px; padding:22px 64px;
+  font-size:20px; font-weight:900; font-family:'Noto Sans KR',sans-serif;
+  cursor:pointer; box-shadow:0 8px 32px rgba(200,129,58,.5);
+  transition:all .18s; letter-spacing:1px;
+}
+.btn-start:active { transform:scale(.96); }
+
+/* ── MENU ── */
+#menu { background:var(--cream); }
+.top-bar {
+  background: linear-gradient(135deg, var(--warm), var(--deep));
+  padding:20px 20px 18px; display:flex; align-items:center; gap:14px;
+}
+.top-logo {
+  width:46px; height:46px; border-radius:50%;
+  background:linear-gradient(135deg,var(--caramel),var(--gold));
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Playfair Display',serif; font-weight:900; font-size:17px; color:var(--warm);
+  flex-shrink:0;
+}
+.top-bar h2 { font-family:'Playfair Display',serif; font-size:19px; color:var(--cream); letter-spacing:2px; }
+.top-bar p { font-size:11px; color:var(--blush); margin-top:2px; }
+.btn-back { background:none; border:none; color:var(--blush); font-size:13px; cursor:pointer; padding:4px 8px; font-family:'Noto Sans KR',sans-serif; display:flex; align-items:center; gap:4px; margin-left:auto; white-space:nowrap; }
+
+.menu-body { flex:1; padding:22px 18px; overflow-y:auto; }
+.sec-title {
+  font-size:12px; font-weight:700; color:var(--caramel); letter-spacing:3px;
+  text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:10px;
+}
+.sec-title::after { content:''; flex:1; height:1px; background:linear-gradient(to right,var(--blush),transparent); }
+
+.menu-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:24px; }
+
+.menu-card {
+  background:white; border-radius:20px; padding:20px 14px 16px;
+  cursor:pointer; border:2.5px solid transparent; transition:all .18s;
+  box-shadow:0 4px 16px rgba(61,31,13,.08); position:relative; overflow:hidden; text-align:center;
+}
+.menu-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; opacity:0; transition:opacity .18s; }
+.menu-card.hot::before { background:linear-gradient(90deg,#8B2E16,var(--caramel)); }
+.menu-card.ice::before { background:linear-gradient(90deg,var(--sky),#6EC6E6); }
+.menu-card.selected { border-color:var(--caramel); box-shadow:0 8px 28px rgba(200,129,58,.25); transform:translateY(-3px); }
+.menu-card.selected::before { opacity:1; }
+.menu-card:active { transform:scale(.97); }
+.chk { position:absolute; top:10px; right:10px; width:24px; height:24px; border-radius:50%; background:var(--caramel); color:white; font-size:14px; display:none; align-items:center; justify-content:center; }
+.menu-card.selected .chk { display:flex; }
+.m-emoji { font-size:38px; margin-bottom:10px; display:block; }
+.m-name { font-size:13px; font-weight:700; color:var(--warm); line-height:1.3; margin-bottom:6px; }
+.badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:.5px; }
+.hot-b { background:rgba(139,46,22,.1); color:#8B2E16; }
+.ice-b { background:rgba(58,143,181,.1); color:var(--sky); }
+.spc-b { background:rgba(75,168,130,.15); color:var(--mint); }
+
+.sel-info {
+  display:none; background:linear-gradient(135deg,rgba(200,129,58,.12),rgba(232,168,62,.06));
+  border:1.5px solid rgba(200,129,58,.3); border-radius:16px;
+  padding:14px 18px; margin-bottom:16px; text-align:center;
+}
+.sel-info small { font-size:12px; color:#AAA; }
+.sel-info strong { font-size:17px; font-weight:900; color:var(--warm); display:block; margin-top:4px; }
+
+.bottom-bar { padding:14px 18px 22px; background:white; border-top:1px solid rgba(61,31,13,.07); }
+.btn-main {
+  width:100%; background:linear-gradient(135deg,var(--caramel),var(--gold));
+  color:var(--warm); border:none; border-radius:18px; padding:20px;
+  font-size:18px; font-weight:900; font-family:'Noto Sans KR',sans-serif;
+  cursor:pointer; box-shadow:0 8px 28px rgba(200,129,58,.4); transition:all .18s; letter-spacing:.5px;
+}
+.btn-main:disabled { opacity:.38; box-shadow:none; cursor:not-allowed; }
+.btn-main:not(:disabled):active { transform:scale(.98); }
+
+/* ── PAYMENT ── */
+#payment { background:var(--cream); }
+.pay-header { background:linear-gradient(135deg,var(--warm),var(--deep)); padding:22px 22px 18px; text-align:center; }
+.pay-header h2 { font-family:'Playfair Display',serif; font-size:22px; color:var(--cream); letter-spacing:2px; margin-bottom:4px; }
+.pay-header p { font-size:12px; color:var(--blush); }
+
+.pay-body { flex:1; padding:22px 18px; overflow-y:auto; }
+
+.order-box {
+  background:white; border-radius:18px; padding:18px; margin-bottom:22px;
+  box-shadow:0 4px 16px rgba(61,31,13,.08);
+}
+.order-box .lbl { font-size:11px; color:#AAA; letter-spacing:2px; margin-bottom:10px; }
+.order-row { display:flex; align-items:center; gap:14px; }
+.order-row .o-emoji { font-size:34px; flex-shrink:0; }
+.o-name { font-weight:700; font-size:16px; color:var(--warm); }
+.o-sub { font-size:12px; color:#AAA; margin-top:2px; }
+.o-qty { margin-left:auto; font-size:13px; font-weight:700; color:var(--caramel); }
+
+.pay-title { font-size:15px; font-weight:900; color:var(--warm); margin-bottom:14px; padding-left:2px; }
+.pay-opts { display:grid; gap:13px; margin-bottom:24px; }
+
+.pay-card {
+  background:white; border-radius:20px; padding:18px; cursor:pointer;
+  border:2.5px solid transparent; transition:all .18s;
+  box-shadow:0 4px 14px rgba(61,31,13,.07); display:flex; align-items:center; gap:16px;
+}
+.pay-card.selected { border-color:var(--caramel); background:linear-gradient(135deg,rgba(200,129,58,.05),rgba(232,168,62,.04)); box-shadow:0 8px 28px rgba(200,129,58,.2); }
+.pay-card:active { transform:scale(.98); }
+.pay-icon { width:58px; height:58px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0; }
+.pi-roll { background:linear-gradient(135deg,rgba(155,125,200,.18),rgba(139,109,200,.08)); }
+.pi-post { background:linear-gradient(135deg,rgba(232,168,62,.18),rgba(242,196,160,.15)); }
+.pi-photo { background:linear-gradient(135deg,rgba(75,168,130,.18),rgba(58,143,181,.08)); }
+.pay-name { font-size:16px; font-weight:900; color:var(--warm); margin-bottom:4px; }
+.pay-desc { font-size:12px; color:#888; line-height:1.55; }
+.radio { width:22px; height:22px; border-radius:50%; border:2.5px solid #DDD; margin-left:auto; flex-shrink:0; transition:all .18s; display:flex; align-items:center; justify-content:center; }
+.pay-card.selected .radio { border-color:var(--caramel); background:var(--caramel); }
+.pay-card.selected .radio::after { content:''; width:8px; height:8px; border-radius:50%; background:white; }
+
+.bot2 { padding:14px 18px 22px; background:white; border-top:1px solid rgba(61,31,13,.07); display:flex; gap:10px; }
+.btn-sec { flex:0 0 auto; background:white; border:1.5px solid rgba(61,31,13,.15); border-radius:14px; padding:18px 18px; font-size:14px; font-family:'Noto Sans KR',sans-serif; color:var(--warm); cursor:pointer; font-weight:600; }
+
+/* ── CONFIRM ── */
+#confirm {
+  background:linear-gradient(160deg,#1A0D05,#2D1408 50%,#1A0D05);
+  align-items:center; justify-content:center; text-align:center;
+  padding:32px 20px; position:relative; overflow:hidden;
+}
+.cf-wrap { position:absolute; top:0; left:0; right:0; height:55%; pointer-events:none; overflow:hidden; }
+.cf-piece { position:absolute; border-radius:2px; animation:cff 3s ease-in infinite; opacity:0; }
+@keyframes cff { 0%{transform:translateY(-20px) rotate(0);opacity:1;} 100%{transform:translateY(220px) rotate(720deg);opacity:0;} }
+
+.ticket {
+  background:white; border-radius:28px; padding:32px 26px; max-width:380px; width:100%;
+  position:relative; box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.t-hole { position:absolute; width:28px; height:28px; border-radius:50%; background:#1A0D05; top:calc(52% - 14px); }
+.t-hole.l { left:-14px; } .t-hole.r { right:-14px; }
+
+.t-top { border-bottom:2px dashed rgba(61,31,13,.15); padding-bottom:22px; margin-bottom:20px; }
+.t-logo { width:68px; height:68px; border-radius:50%; background:linear-gradient(135deg,var(--caramel),var(--gold)); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-family:'Playfair Display',serif; font-size:26px; font-weight:900; color:var(--warm); box-shadow:0 8px 24px rgba(200,129,58,.4); }
+.t-cafe { font-family:'Playfair Display',serif; font-size:19px; letter-spacing:3px; color:var(--warm); margin-bottom:4px; }
+.t-date { font-size:12px; color:#AAA; }
+
+.t-lbl { font-size:11px; color:#AAA; letter-spacing:1.5px; margin-bottom:5px; }
+.t-customer { font-size:24px; font-weight:900; color:var(--caramel); margin-bottom:14px; }
+.t-menu { font-size:20px; font-weight:900; color:var(--warm); margin-bottom:18px; line-height:1.35; }
+
+.t-pay {
+  background:linear-gradient(135deg,rgba(200,129,58,.1),rgba(232,168,62,.05));
+  border:1.5px solid rgba(200,129,58,.2); border-radius:16px; padding:14px; margin-bottom:16px;
+}
+.t-pay-emoji { font-size:26px; display:block; margin-bottom:4px; }
+.t-pay-val { font-size:16px; font-weight:700; color:var(--caramel); }
+
+.t-msg { font-size:13px; color:#888; line-height:1.75; margin-bottom:20px; }
+.t-msg strong { color:var(--caramel); }
+.t-foot { border-top:1.5px dashed rgba(61,31,13,.12); padding-top:14px; }
+.t-foot div { font-size:11px; color:#BBB; line-height:1.7; }
+
+.btn-home { background:linear-gradient(135deg,var(--caramel),var(--gold)); color:var(--warm); border:none; border-radius:60px; padding:18px 46px; font-size:17px; font-weight:900; font-family:'Noto Sans KR',sans-serif; cursor:pointer; box-shadow:0 8px 32px rgba(200,129,58,.5); margin-top:28px; transition:all .18s; }
+.btn-home:active { transform:scale(.97); }
+</style>
+</head>
+<body>
+
+<!-- ▌WELCOME ▌ -->
+<div class="screen active" id="welcome">
+  <div class="beans">
+    <span class="bean">☕</span><span class="bean">✨</span>
+    <span class="bean">🫘</span><span class="bean">⭐</span><span class="bean">💛</span>
+  </div>
+  <div class="logo-ring"><span class="logo-cs">CS</span></div>
+  <p class="cafe-sub">WELCOME TO</p>
+  <h1 class="cafe-title">Cafe SEUJUN</h1>
+  <p class="cafe-by">푸르메재단 넥슨어린이재활병원<br>학령기치료팀 일일카페</p>
+  <div class="hero-name">
+    <p class="hello">오늘의 주인공 ✨</p>
+    <p class="name">권 <span>서준</span> 바리스타님</p>
+  </div>
+  <button class="btn-start" onclick="goTo('menu')">☕ 주문 시작하기</button>
+</div>
+
+<!-- ▌MENU ▌ -->
+<div class="screen" id="menu">
+  <div class="top-bar">
+    <div class="top-logo">CS</div>
+    <div>
+      <h2>Cafe SEUJUN</h2>
+      <p>마시고 싶은 음료를 골라보세요 ☕</p>
+    </div>
+    <button class="btn-back" onclick="goTo('welcome')">← 처음으로</button>
+  </div>
+
+  <div class="menu-body">
+    <div class="sec-title">☕ TODAY'S MENU</div>
+    <div class="menu-grid">
+      <div class="menu-card hot" onclick="pickMenu(this,'americano-hot','아메리카노','HOT ☕','☕')">
+        <div class="chk">✓</div>
+        <span class="m-emoji">☕</span>
+        <div class="m-name">아메리카노</div>
+        <span class="badge hot-b">🔥 HOT</span>
+      </div>
+      <div class="menu-card ice" onclick="pickMenu(this,'americano-ice','아메리카노','ICE ☕','🧊')">
+        <div class="chk">✓</div>
+        <span class="m-emoji">🧊</span>
+        <div class="m-name">아메리카노</div>
+        <span class="badge ice-b">❄️ ICE</span>
+      </div>
+      <div class="menu-card ice" onclick="pickMenu(this,'icetea','아이스티','SWEET 🍑','🍑')">
+        <div class="chk">✓</div>
+        <span class="m-emoji">🍑</span>
+        <div class="m-name">아이스티</div>
+        <span class="badge ice-b">🍑 ICE</span>
+      </div>
+      <div class="menu-card ice" onclick="pickMenu(this,'icetea-shot','아이스티 + 샷추가','SPECIAL ⚡','⚡')">
+        <div class="chk">✓</div>
+        <span class="m-emoji">⚡</span>
+        <div class="m-name">아이스티<br>+ 샷추가</div>
+        <span class="badge spc-b">🌟 SPECIAL</span>
+      </div>
+    </div>
+    <div class="sel-info" id="sel-info">
+      <small>선택한 메뉴</small>
+      <strong id="sel-text"></strong>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <button class="btn-main" id="btn-next" onclick="goTo('payment')" disabled>다음 단계 →</button>
+  </div>
+</div>
+
+<!-- ▌PAYMENT ▌ -->
+<div class="screen" id="payment">
+  <div class="pay-header">
+    <h2>결제 방법 선택 💛</h2>
+    <p>돈은 필요 없어요! 소중한 추억으로 결제해요 🎁</p>
+  </div>
+  <div class="pay-body">
+    <div class="order-box">
+      <div class="lbl">ORDER SUMMARY</div>
+      <div class="order-row">
+        <span class="o-emoji" id="o-emoji">☕</span>
+        <div>
+          <div class="o-name" id="o-name">아메리카노</div>
+          <div class="o-sub" id="o-sub">HOT ☕</div>
+        </div>
+        <div class="o-qty">1잔</div>
+      </div>
+    </div>
+    <div class="pay-title">어떤 방법으로 결제할까요? 🎉</div>
+    <div class="pay-opts">
+      <div class="pay-card" onclick="pickPay(this,'rolling','📝 롤링페이퍼 감사인사','선생님들의 따뜻한 응원 메시지를\n확인하는 걸 잊지 마세요! 💌')">
+        <div class="pay-icon pi-roll">📝</div>
+        <div>
+          <div class="pay-name">롤링페이퍼 감사인사</div>
+          <div class="pay-desc">선생님들이 서준이를 위해<br>준비한 따뜻한 응원 메시지 💌</div>
+        </div>
+        <div class="radio"></div>
+      </div>
+      <div class="pay-card" onclick="pickPay(this,'post','⭐ 응원 포스트잇','예쁜 응원 포스트잇을 받아\n소중한 곳에 붙여두세요! 🌈')">
+        <div class="pay-icon pi-post">⭐</div>
+        <div>
+          <div class="pay-name">응원 포스트잇</div>
+          <div class="pay-desc">서준이를 응원하는 예쁜 포스트잇!<br>집에 가져가서 붙여보세요 🌈</div>
+        </div>
+        <div class="radio"></div>
+      </div>
+      <div class="pay-card" onclick="pickPay(this,'photo','📸 바리스타와 기념사진','서준이 바리스타님~\n함께 사진 찍으러 가요! 📸')">
+        <div class="pay-icon pi-photo">📸</div>
+        <div>
+          <div class="pay-name">바리스타와 기념사진</div>
+          <div class="pay-desc">서준이 바리스타님과 함께<br>오늘의 특별한 순간을 사진으로! 📷</div>
+        </div>
+        <div class="radio"></div>
+      </div>
+    </div>
+  </div>
+  <div class="bot2">
+    <button class="btn-sec" onclick="goTo('menu')">← 메뉴</button>
+    <button class="btn-main" id="btn-confirm" onclick="doConfirm()" disabled style="flex:1;">주문 완료! 🎉</button>
+  </div>
+</div>
+
+<!-- ▌CONFIRM ▌ -->
+<div class="screen" id="confirm">
+  <div class="cf-wrap" id="cf-wrap"></div>
+  <div class="ticket">
+    <div class="t-hole l"></div>
+    <div class="t-hole r"></div>
+    <div class="t-top">
+      <div class="t-logo">CS</div>
+      <div class="t-cafe">Cafe SEUJUN</div>
+      <div class="t-date" id="t-date"></div>
+    </div>
+    <div class="t-lbl">주문자</div>
+    <div class="t-customer">권서준 바리스타님 ⭐</div>
+    <div class="t-lbl">주문 메뉴</div>
+    <div class="t-menu" id="t-menu"></div>
+    <div class="t-pay">
+      <span class="t-pay-emoji" id="t-pemoji">📝</span>
+      <div class="t-lbl">결제 방법</div>
+      <div class="t-pay-val" id="t-pval"></div>
+    </div>
+    <div class="t-msg" id="t-msg"></div>
+    <div class="t-foot">
+      <div>푸르메재단 넥슨어린이재활병원</div>
+      <div>학령기치료팀 일일카페 이벤트</div>
+    </div>
+  </div>
+  <button class="btn-home" onclick="goHome()">🏠 처음으로 돌아가기</button>
+</div>
+
+<script>
+let menu = {id:'',name:'',sub:'',emoji:''};
+let pay = {id:'',name:'',msg:''};
+const payEmoji = {rolling:'📝', post:'⭐', photo:'📸'};
+
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function pickMenu(el,id,name,sub,emoji){
+  document.querySelectorAll('.menu-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  menu={id,name,sub,emoji};
+  document.getElementById('sel-info').style.display='block';
+  document.getElementById('sel-text').textContent=emoji+' '+name+' · '+sub;
+  document.getElementById('btn-next').disabled=false;
+  document.getElementById('o-emoji').textContent=emoji;
+  document.getElementById('o-name').textContent=name;
+  document.getElementById('o-sub').textContent=sub;
+}
+
+function pickPay(el,id,name,msg){
+  document.querySelectorAll('.pay-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  pay={id,name,msg};
+  document.getElementById('btn-confirm').disabled=false;
+}
+
+function doConfirm(){
+  if(!menu.id||!pay.id) return;
+  const now=new Date();
+  document.getElementById('t-date').textContent=`${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일`;
+  document.getElementById('t-menu').textContent=menu.emoji+' '+menu.name+'\n'+menu.sub;
+  document.getElementById('t-pemoji').textContent=payEmoji[pay.id]||'🎁';
+  document.getElementById('t-pval').textContent=pay.name;
+  document.getElementById('t-msg').innerHTML=pay.msg.replace(/\n/g,'<br>');
+  goTo('confirm');
+  spawnConfetti();
+}
+
+function spawnConfetti(){
+  const w=document.getElementById('cf-wrap');
+  w.innerHTML='';
+  const colors=['#C8813A','#E8A83E','#F2C4A0','#4BA882','#3A8FB5','#E06B8B','#FFD700','#B5E3D8'];
+  for(let i=0;i<48;i++){
+    const c=document.createElement('div');
+    c.className='cf-piece';
+    c.style.left=Math.random()*100+'%';
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.width=(Math.random()*10+5)+'px';
+    c.style.height=(Math.random()*10+5)+'px';
+    c.style.borderRadius=Math.random()>.5?'50%':'3px';
+    c.style.animationDelay=Math.random()*2.5+'s';
+    c.style.animationDuration=(Math.random()*2+1.8)+'s';
+    w.appendChild(c);
+  }
+}
+
+function goHome(){
+  menu={id:'',name:'',sub:'',emoji:''};
+  pay={id:'',name:'',msg:''};
+  document.querySelectorAll('.menu-card,.pay-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('sel-info').style.display='none';
+  document.getElementById('btn-next').disabled=true;
+  document.getElementById('btn-confirm').disabled=true;
+  goTo('welcome');
+}
+</script>
+</body>
+</html>
